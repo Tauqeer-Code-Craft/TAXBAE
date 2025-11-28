@@ -3,13 +3,13 @@ import { useState } from "react";
 import { DateRangeType } from "@/components/date-range-select";
 
 import CalculatorSummary from "./calculator-summary";
-import CalculatorChart from "./calculator-chart";
 
 import EMICalculator from "./_component/EMICalculator";
 import SIPCalculator from "./_component/SIPCalculator";
 import RentVsBuyCalculator from "./_component/RentVsBuyCalculator";
 import GoalPlannerCalculator from "./_component/goal-planner-calculator";
 import TaxBenefitsCalculator from "./_component/tax-benefits-calculator";
+import RetirementPlanningCalculator from "./_component/retirement-planning";
 
 const Calculators = () => {
   const [activeCalculator, setActiveCalculator] = useState("emi");
@@ -28,23 +28,14 @@ const Calculators = () => {
           />
         }
       >
-        {/* Main Section (Chart + Calculator Input) */}
-        <div className="w-full grid grid-cols-1 lg:grid-cols-6 gap-8">
-
-          {/* Left — Chart */}
-          <div className="lg:col-span-4">
-            <CalculatorChart calculator={activeCalculator} dateRange={dateRange} />
-          </div>
-
-          {/* Right — Calculator Form */}
-          <div className="lg:col-span-2">
-            {activeCalculator === "emi" && <EMICalculator />}
-            {activeCalculator === "sip" && <SIPCalculator />}
-            {activeCalculator === "rent-vs-buy" && <RentVsBuyCalculator />}
-            {activeCalculator === "goal" && <GoalPlannerCalculator />}
-            {activeCalculator === "tax" && <TaxBenefitsCalculator />}
-          </div>
-
+        {/* Just render the active calculator as a single-section page */}
+        <div className="w-full max-w-10xl mx-auto">
+          {activeCalculator === "emi" && <EMICalculator />}
+          {activeCalculator === "sip" && <SIPCalculator />}
+          {activeCalculator === "rent-vs-buy" && <RentVsBuyCalculator />}
+          {activeCalculator === "goal" && <GoalPlannerCalculator />}
+          {activeCalculator === "tax" && <TaxBenefitsCalculator />}
+          {activeCalculator === "retirement" && <RetirementPlanningCalculator />}
         </div>
       </PageLayout>
     </div>
