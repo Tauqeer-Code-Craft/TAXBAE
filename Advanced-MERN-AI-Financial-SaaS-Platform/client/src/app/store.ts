@@ -11,35 +11,25 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-import { apiClient } from "./api-client";
-//import { encryptTransform } from 'redux-persist-transform-encrypt';
+import { apiClient } from "./api-client"; // Assuming this is the general API client for other APIs
+import { chatApi } from "../services/chatApi"; // Import chat API slice
 
 type RootReducerType = ReturnType<typeof rootReducer>;
 
 const persistConfig = {
-  key: "root", // Key for the persisted data in storage
-  storage, // Storage engine to use (localStorage)
-  blacklist: [apiClient.reducerPath], // Specify which reducers not to persist (RTK Query cache)
-  // transforms: [
-  //     encryptTransform({
-  //       secretKey: import.meta.env.VITE_REDUX_PERSIST_SECRET_KEY!,
-  //       onError: function (error) {
-  //         console.error('Encryption error:', error);
-  //       },
-  //     }),
-  //   ],
+  key: "root",
+  storage,
+  blacklist: [apiClient.reducerPath, chatApi.reducerPath], // Optionally persist API data if needed
 };
 
 const rootReducer = combineReducers({
-  [apiClient.reducerPath]: apiClient.reducer, // Add API client reducer to root reducer
-  auth: authReducer, // Add auth reducer to root reducer
+  [apiClient.reducerPath]: apiClient.reducer, // Add API client reducer
+  [chatApi.reducerPath]: chatApi.reducer, // Add chatApi reducer for Gemini chat
+  auth: authReducer,
 });
 
 // Create a persisted version of the root reducer
-const persistedReducer = persistReducer<RootReducerType>(
-  persistConfig,
-  rootReducer
-);
+const persistedReducer = persistReducer<RootReducerType>(persistConfig, rootReducer);
 
 const reduxPersistActions = [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER];
 
@@ -48,9 +38,9 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: reduxPersistActions, /// Ignore specific actions in serializable checks
+        ignoredActions: reduxPersistActions, // Ignore serializable checks for specific actions
       },
-    }).concat(apiClient.middleware),
+    }).concat(apiClient.middleware, chatApi.middleware), // Add middleware for chatApi
 });
 
 export const persistor = persistStore(store); // Create a persistor linked to the store

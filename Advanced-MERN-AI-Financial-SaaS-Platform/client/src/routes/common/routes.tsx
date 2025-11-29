@@ -9,6 +9,7 @@ import Account from "@/pages/settings/account";
 import Appearance from "@/pages/settings/appearance";
 import Billing from "@/pages/settings/billing";
 import Calculators from "@/pages/calculators";
+import Chatbot from "@/pages/chatbot";
 
 export const authenticationRoutePaths = [
   { path: AUTH_ROUTES.SIGN_IN, element: <SignIn /> },
@@ -20,6 +21,7 @@ export const protectedRoutePaths = [
   { path: PROTECTED_ROUTES.TRANSACTIONS, element: <Transactions /> },
   { path: PROTECTED_ROUTES.REPORTS, element: <Reports /> },
   { path: PROTECTED_ROUTES.TAXCALCULATOR, element: <Calculators /> },
+  { path: PROTECTED_ROUTES.CHATBOT, element: <Chatbot /> },
   { path: PROTECTED_ROUTES.SETTINGS, 
     element: <Settings /> ,
     children: [
